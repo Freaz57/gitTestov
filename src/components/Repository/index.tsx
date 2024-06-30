@@ -2,6 +2,8 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_REPO_DETAILS } from '../../resurce/get_repo_details.tsx';
+import { Link } from 'react-router-dom';
+import styles from './Reposiyory.module.scss'
 
 interface ILanguage {
     name: string;
@@ -37,7 +39,8 @@ const Repository: React.FC = () => {
     const repository: IRepository = data.repository;
 
     return (
-        <div>
+        <div className={styles.container}>
+            <Link to="/" className={styles.btn}>Назад</Link>
             <h1>{repository.name} - {repository.stargazers.totalCount} stars - {new Date(repository.updatedAt).toLocaleDateString()}</h1>
             <div>
                 <img src={repository.owner.avatarUrl} alt={repository.owner.login} width={50} />
@@ -46,7 +49,7 @@ const Repository: React.FC = () => {
             <div>
                 <h3>Languages</h3>
                 <ul>
-                    {repository.languages.nodes.map((language: ILanguage) => (
+                    {repository.languages.nodes.map(language => (
                         <li key={language.name}>{language.name}</li>
                     ))}
                 </ul>

@@ -6,6 +6,7 @@ import { useLazyQuery} from '@apollo/client';
 import { Link } from 'react-router-dom';
 import {GET_USER_REPOS} from "../../resurce/get_user_repos.tsx";
 import {SEARCH_REPOS} from "../../resurce/search_repos.tsx";
+import styles from './Home.module.scss';
 
 interface RepositoryNode {
     name: string;
@@ -52,23 +53,24 @@ const Home: React.FC = () => {
     const repositories = query ? searchData?.search.edges : userData?.viewer.repositories.edges;
 
     return (
-        <div>
+        <div className={styles.container}>
             <input
                 type="text"
+                className={styles.input}
                 value={query}
                 onChange={handleSearchChange}
                 placeholder="Search repositories"
             />
             {(searchLoading || userLoading) && <p>Loading...</p>}
-            <ul>
+            <ul className={styles.box}>
                 {repositories?.map(({ node }: { node: RepositoryNode }) => (
-                    <li key={node.name}>
+                    <li key={node.name} className={styles.item}>
                         <p>{node.owner.login}</p>
                         <Link to={`/repository/${node.owner.login}/${node.name}`}>{node.name}</Link> - {node.stargazers.totalCount} stars - {new Date(node.updatedAt).toLocaleDateString()} - <a href={node.url} target="_blank" rel="noopener noreferrer">GitHub</a>
                     </li>
                 ))}
             </ul>
-            <div>
+            <div className={styles.btn}>
                 {[...Array(10)].map((_, i) => (
                     <button
                         key={`page-${i}`}
